@@ -1,5 +1,5 @@
 # About
-Naru     - Programming language for numerical calculation
+Naru     - Programming language for numerical calculation  
 NaruTest - CLI Tool for Naru
 
 # Usage
