@@ -337,14 +337,14 @@ namespace Naru {
                 Console.WriteLine("worning : ファイル " + fileName + " が再度インクルードされました。");
             }
             else {
-                using (var s = new StreamReader(new FileStream(fileName, FileMode.Open), Encoding.GetEncoding("Shift_JIS"))) {
+                using (var s = new StreamReader(new FileStream(fileName, FileMode.Open), Encoding.GetEncoding("UTF-8"))) {
                     var an = new Analyzer.ScriptAnalyzer(s.ReadToEnd(), this);
                 }
             }
         }
         public void LoadFuncText(string filePath) {
             try {
-                using (var stream = new StreamReader(new FileStream(filePath, FileMode.Open), Encoding.GetEncoding("Shift_JIS"))) {
+                using (var stream = new StreamReader(new FileStream(filePath, FileMode.Open), Encoding.GetEncoding("UTF-8"))) {
                     while (!stream.EndOfStream) {
                         var s = stream.ReadLine().Split(':');
                         if (s.Length == 2) {
@@ -359,7 +359,7 @@ namespace Naru {
         }
         public void LoadConstText(string filePath) {
             try {
-                using (var stream = new StreamReader(new FileStream(filePath, FileMode.Open), Encoding.GetEncoding("Shift_JIS"))) {
+                using (var stream = new StreamReader(new FileStream(filePath, FileMode.Open), Encoding.GetEncoding("UTF-8"))) {
                     while (!stream.EndOfStream) {
                         var s = stream.ReadLine().Split(':');
                         if (s.Length == 2) {

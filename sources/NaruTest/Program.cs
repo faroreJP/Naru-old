@@ -11,9 +11,13 @@ namespace NaruTest {
     class Program {
         static void Main(string[] args) {
             Console.WriteLine(NaruEngine.Information);
-            Script();
-            //ScriptTill(5);
-            //Once();
+
+			if (args.Length > 0) {
+				NaruEngine.ExecutesScript ( System.IO.File.ReadAllText(args[0]) );
+			}
+			else {
+				Script();
+			}
         }
 
         static void Script() {

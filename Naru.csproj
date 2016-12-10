@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{F18FB68F-F5B4-4BCB-ACB2-ED9DBB94AD0C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Naru</RootNamespace>
+    <AssemblyName>Naru</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="sources\Naru\MathDictionary.cs">
+      <Link>Naru\MathDictionary.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\NaruEngine.cs">
+      <Link>Naru\NaruEngine.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Analyzer\FormulaAnalyzer.cs">
+      <Link>Naru\Analyzer\FormulaAnalyzer.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Analyzer\ScriptAnalyzer.cs">
+      <Link>Naru\Analyzer\ScriptAnalyzer.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Function\BuiltIn0Operand.cs">
+      <Link>Naru\Function\BuiltIn0Operand.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Function\BuiltIn1Operand.cs">
+      <Link>Naru\Function\BuiltIn1Operand.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Function\BuiltIn2Operand.cs">
+      <Link>Naru\Function\BuiltIn2Operand.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Function\BuiltIn3Operand.cs">
+      <Link>Naru\Function\BuiltIn3Operand.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Function\BuiltInArray.cs">
+      <Link>Naru\Function\BuiltInArray.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Function\BuiltInCast.cs">
+      <Link>Naru\Function\BuiltInCast.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Function\FunctionBase.cs">
+      <Link>Naru\Function\FunctionBase.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Function\FunctionDeclared.cs">
+      <Link>Naru\Function\FunctionDeclared.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Node\ConstantDeclaration.cs">
+      <Link>Naru\Node\ConstantDeclaration.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Node\FunctionCall.cs">
+      <Link>Naru\Node\FunctionCall.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Node\Literal.cs">
+      <Link>Naru\Node\Literal.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Node\NodeBase.cs">
+      <Link>Naru\Node\NodeBase.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Node\NodeRoot.cs">
+      <Link>Naru\Node\NodeRoot.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Node\OperatorBinary.cs">
+      <Link>Naru\Node\OperatorBinary.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Node\OperatorEqual.cs">
+      <Link>Naru\Node\OperatorEqual.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Node\OperatorReference.cs">
+      <Link>Naru\Node\OperatorReference.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Node\OperatorUnary.cs">
+      <Link>Naru\Node\OperatorUnary.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Node\Variable.cs">
+      <Link>Naru\Node\Variable.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Node\VariableArray.cs">
+      <Link>Naru\Node\VariableArray.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Node\VariableDeclaration.cs">
+      <Link>Naru\Node\VariableDeclaration.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Properties\AssemblyInfo.cs">
+      <Link>Naru\Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Properties\Settings.Designer.cs">
+      <Link>Naru\Properties\Settings.Designer.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Sentence\SentenceBase.cs">
+      <Link>Naru\Sentence\SentenceBase.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Sentence\SentenceBrace.cs">
+      <Link>Naru\Sentence\SentenceBrace.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Sentence\SentenceElse.cs">
+      <Link>Naru\Sentence\SentenceElse.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Sentence\SentenceFor.cs">
+      <Link>Naru\Sentence\SentenceFor.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Sentence\SentenceIf.cs">
+      <Link>Naru\Sentence\SentenceIf.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Sentence\SentenceReturn.cs">
+      <Link>Naru\Sentence\SentenceReturn.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Sentence\SentenceWhile.cs">
+      <Link>Naru\Sentence\SentenceWhile.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Value\ArrayHead.cs">
+      <Link>Naru\Value\ArrayHead.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Value\Bool.cs">
+      <Link>Naru\Value\Bool.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Value\Byte1.cs">
+      <Link>Naru\Value\Byte1.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Value\CharacterString.cs">
+      <Link>Naru\Value\CharacterString.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Value\Complex.cs">
+      <Link>Naru\Value\Complex.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Value\Formula.cs">
+      <Link>Naru\Value\Formula.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Value\Numeric.cs">
+      <Link>Naru\Value\Numeric.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Value\Reference.cs">
+      <Link>Naru\Value\Reference.cs</Link>
+    </Compile>
+    <Compile Include="sources\Naru\Value\ValueBase.cs">
+      <Link>Naru\Value\ValueBase.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="sources\Naru\Properties\Settings.settings">
+      <Link>Naru\Properties\Settings.settings</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+</Project>
