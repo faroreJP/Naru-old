@@ -12,6 +12,19 @@ Windows:
 Linux, OS X:  
 `# mono NaruTest.exe`
 
+Type 'end' to execute script typed in.   
+e.g.
+
+```
+function fibo(numeric n) {
+  return cond([n<2],[n],[fibo(n-1)+fibo(n-2)]);
+}
+
+var N=8;
+println("fibo("+N+") = "+fibo(N));
+end
+```
+
 ## Execute With File
 When execute script from file, Specify the script file.
 
