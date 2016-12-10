@@ -1,0 +1,46 @@
+include "scripts/additional_math.nrk";
+
+var M=4;  //回帰曲線の次数
+var N=6;  //データの個数
+var r[M+1]; //回帰曲線の式
+var x[N]; //x軸データ
+var y[N]; //y軸データ
+
+x[0]=0.0; y[0]=0.0;
+x[1]=1.0; y[1]=1.1;
+x[2]=2.0; y[2]=2.5;
+x[3]=3.0; y[3]=4.0;
+x[4]=3.1; y[4]=4.1;
+x[5]=5.0; y[5]=5.0;
+
+//additional_math.nrk内の最小二乗法の実行
+least_squares(N, x, y, M, r, 0.0001);
+
+//結果の出力
+for(var i=0;i<M+1;++i){
+  println("["+i+"]"+round(r[i], 3));
+}
+end
+
+
+
+include "../../../additional_math.nrk";
+var f=[10*x^3+4*x^2-17*x-24];
+print(f);
+println(" = 0");
+print("x = ");
+println(round(newton(f, 1, 0.000001, 5), 5));
+end
+
+
+
+include "../../../additional_math.nrk";
+var a[2];
+root(1, 2, 4, a);
+for(var i=0;i<2;++i)
+  println(a[i]);
+end
+
+var f=[x*x+5];
+println(differential(f, 5, 10));
+end

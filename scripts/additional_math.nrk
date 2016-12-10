@@ -1,0 +1,206 @@
+function differential(formula _y, numeric _x0, numeric _N){
+  if(_N<=0){
+    println("[警告]_Nは正の値である必要があります。");
+    println("[警告]_N=10として計算します。");
+    _N=10;
+  }
+
+  var _h; //_hの値の決定
+  if(_x0!=0)  _h=abs(_x0/(10^_N));
+  else        _h=1/(10^_N);
+
+  var x=_x0+_h;
+  var y1=*_y;
+  x=_x0;
+  return (y1-(*_y))/_h;
+}
+function definite_integral(formula _y, numeric _xa, numeric _xb, numeric _N){
+  if(_N<=0){
+    println("[警告]_Nは正の偶数である必要があります。");
+    println("[警告]_N=100として計算します。");
+    _N=100;
+  }
+  if(_N%2!=0){
+    println("[警告]_Nは正の偶数である必要があります。");
+    println("[警告]_N=_N+1として計算します。");
+    _N=_N+1;
+  }
+  var _h=(_xb-_xa)/_N;        //_hの決定
+  var _z1=0;
+  var _z2=0;
+  var _y0;
+  var _yN;
+  var x;
+  var _i;
+
+  for(_i=1;_i<=_N-1;_i=_i+2){
+    x=_xa+_h*_i;
+    _z1=_z1+4.0*(*_y);
+  }
+
+  for(_i=2;_i<=_N-2;_i=_i+2){
+    x=_xa+_h*_i;
+    _z2=_z2+2.0*(*_y);
+  }
+
+  x=_xa;
+  _y0=(*_y);
+  x=_xb;
+  _yN=(*_y);
+
+  return (_h/3.0)*(_y0+_z1+_z2+_yN);
+}
+function runge_kutta(formula _f, numeric _x0, numeric _y0, numeric _xm, numeric _h){
+  var x, var y;
+  var _xx=_x0, var _yy=_y0;
+  var _k1, var _k2, var _k3, var _k4;
+
+  if(_h<=0){
+    println("[警告]_hは正の値である必要があります。");
+    println("[警告]_h=abs(_h)として計算します。");
+    _h=abs(_h);
+  }
+
+  while(_xx<=_xm+_h/2){
+    x=_xx,    y=_yy     _k1=(*_f);
+    x=_xx+_h/2, y=_yy+_h*_k1/2, _k2=(*_f);
+    x=_xx+_h/2, y=_yy+_h*_k2/2, _k3=(*_f);
+    x=_xx+_h, y=_yy+_h*_k3, _k4=(*_f);
+
+    _yy=_yy+(_h/6)*(_k1+2.0*_k2+2.0*_k3+_k4);
+    _xx=_xx+_h;
+  }
+  return _yy;
+}
+function root(numeric _a, numeric _b, numeric _c, array _result){
+  if(*_result!=2){
+    println("[エラー]配列"+_result+"の長さは2でなければなりません。");
+    return true;
+  }
+
+  var _d=_b^2-4*_a*_c;  //判別式
+  if(_d<=0){
+    //解は複素数
+    var _f=sqrt(-_d);
+    _result[0]=_cmp(-_b, _f)/(2*_a);
+    _result[1]=_cmp(-_b, -_f)/(2*_a);
+  }
+  else{
+    //解は実数
+    var _f=sqrt(_d);
+    _result[0]=_cmp(-_b+_f, 0)/(2*_a);
+    _result[1]=_cmp(-_b-_f, 0)/(2*_a);
+  }
+
+  return false;
+}
+function newton(formula _y, numeric _x0, numeric _EPS, numeric _N){
+  var x=0;
+  var _tmp=0;
+
+  if(_EPS<=0){
+    println("[警告]_EPSは正の値である必要があります。");
+    println("[警告]_EPS=1.0e-10として計算します。");
+    _EPS=10^(-10);
+  }
+
+  while(abs((_x0-x)/_x0)>=_EPS){
+    x=_x0;
+    _x0=x-(*_y)/differential(_y, x, _N);
+  }
+  return _x0;
+}
+function bairstow(array _a, array _result, numeric _EPS){
+  if((*a)!=(*_result)){
+    println("[エラー]配列"+_a+"と"+_result+"の長さは等しくなければなりません。");
+    return true;
+  }
+  if(_EPS<=0){
+    println("[警告]_EPSは正の値である必要があります。");
+    println("[警告]_EPS=1.0e-10として計算します。");
+    _EPS=10^(-10);
+  }
+  println("未実装やで");
+  return false;
+}
+function gauss_jordan(numeric _M, array _a, numeric _EPS){
+  var _pivot,var _delta, var _index;
+  var _i, var _j, var _k;
+
+  if(*_a!=(_M+1)*(_M+2)){
+    println("[エラー]配列"+_a+"の長さは(_M+1)*(_M+2)でなければなりません。");
+    return true;
+  }
+
+  for(_i=0;_i<=_M;++_i){
+    _pivot=_a[_i+_i*(_M+2)];
+    if(abs(_pivot)<_EPS){
+      println("[エラー]計算中に_pivotが_EPS以下となりました。");
+      return true;
+    }
+
+    _j=0;
+    for(_j=0;_j<=_M+1;++_j){
+      _index=_j+_i*(_M+2);
+      _a[_index]=_a[_index]/_pivot;
+    }
+
+    _k=0;
+    for(_k=0;_k<=_M;++_k){
+      _delta=_a[_i+_k*(_M+2)];
+
+      for(_j=0;_j<=_M+1;++_j){
+        if(_k!=_i){
+          _index=_j+_k*(_M+2);
+          _a[_index]=_a[_index]-_delta*_a[_j+_i*(_M+2)];
+        }
+      }
+    }
+  }
+  return false;
+}
+function least_squares(numeric _N, array _dx, array _dy, numeric _M, array _result, numeric _EPS){
+  var _index;
+  var _i, var _j, var _k;
+  var _a[(_M+1)*(_M+2)];
+
+  if(*_result!=_M+1){
+    println("[エラー]配列"+_result+"の長さは_M+1でなければなりません。");
+    return true;
+  }
+
+  //
+  for(_i=0;_i<=_M;++_i){
+    for(_j=0;_j<=_M+1;++_j){
+      _a[_j+_i*(_M+2)]=0.0;
+    }
+  }
+
+  //
+  for(_i=0;_i<=_M;++_i){
+    for(_j=0;_j<=_M;++_j){
+      for(_k=0;_k<_N;++_k){
+        _index=_i+_j*(_M+2);
+        _a[_index]=_a[_index]+pow(_dx[_k], _i+_j);
+      }
+    }
+  }
+
+  //
+  for(_i=0;_i<=_M;++_i){
+    for(_j=0;_j<_N;++_j){
+      _index=_M+1+_i*(_M+2);
+      _a[_index]=_a[_index]+_dy[_j]*pow(x[_j], _i); 
+    }
+  }
+
+  //
+  if(gauss_jordan(_M, _a, _EPS)){
+    return true;
+  }
+  //
+  for(_i=0;_i<=_M;++_i){
+    _result[_i]=_a[_M+1+_i*(_M+2)];
+  }
+  return false;
+}

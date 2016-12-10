@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>Naru について</title>
+  </head>
+  <body>
+    <div>
+      <h2>目次</h2>
+      <ul>
+        <li><a href="#nr" target="frame">Naru</a>
+          <ul>
+            <li><a href="#nr_genremark">概説</a></li>
+            <li><a href="#nr_grammer">基本文法</a></li>
+            <li><a href="#nr_type">組み込み型</a></li>
+            <li><a href="#nr_variable">変数</a></li>
+            <li><a href="#nr_constant">定数</a></li>
+            <li><a href="#nr_flow">分岐と反復</a></li>
+            <li><a href="#nr_function">関数の利用</a></li>
+            <li><a href="#nr_include">外部ファイルのインクルード</a></li>
+            <!--<li><a href="#nr_sample">サンプルスクリプト</a></li>-->
+          </ul>
+          <br>
+        </li>
+        <li><a href="#rf" target="frame">リファレンス</a>
+          <ul>
+            <li><a href="#rf_reserved">予約語</a></li>
+            <li><a href="#rf_operator">演算子</a></li>
+            <li><a href="#rf_constant">定数</a></li>
+            <li><a href="#rf_function">関数</a></li>
+          </ul>
+        </li>
+        <!--<li class="ContentItem"><a href="profile.html" target="frame"></a></li>-->
+      </ul>
+    </div>
+
+    <hr>
+
+    
+    <h2 id="nr">Naru</h2>
+    <div>
+      <h3 id="nr_genremark">概説</h3>
+      <p>
+        Naruは数値計算を目的として開発されたCライクな文法の簡易スクリプト言語です。<br>
+        Naruはインタプリタに入力されたスクリプトを直接解釈して実行します。
+      </p>
+
+      <h3 id="nr_grammer">基本文法</h3>
+      <p>
+        基本的に文はセミコロン';'で区切られます。<br>
+        複数の文をまとめたいときはいくつかの式を中括弧'{','}'で囲みます。<br>
+        スクリプト中の空白、改行文字はだいたい無視されるので、比較的自由な記述が可能です。<br>
+        スラッシュ'/'を2個連続で配置するとそこからその行の末尾までがコメントとして扱われます。<br>
+        "/*"から"*/"までの範囲もコメントとして扱われます。この場合は複数行にわたるコメントも記述できます。
+      </p>
+      
+      <h3 id="nr_type">組み込み型</h3>
+      <p>
+        Naruでは以下の組み込み型が使用できます。<br>
+        それぞれの型はキャスト関数で別の型に変換することができます。<br>
+        キャスト関数についてはリファレンスを参照してください。
+        <table border=1>
+          <tr>
+            <th>型</th>
+            <th>説明</th>
+          </tr>
+          <tr>
+            <td>numeric</td>
+            <td>数値です。整数、実数含め数値は全てnumeric型で扱われます。</td>
+          </tr>
+          <tr>
+            <td>complex</td>
+            <td>複素数です。complex型と演算するnumeric型は暗黙の内にcomplex型に変換されます。<br>数値の末尾に虚数単位'i'を加えることで複素数リテラルを表します。</td>
+          </tr>
+          <tr>
+            <td>byte</td>
+            <td>1バイトの整数です。ビット演算ができます。リテラルは0xで始まる16進数で表されます。</td>
+          </tr>
+          <tr>
+            <td>boolean</td>
+            <td>真偽値です。"true"または"false"のみをとります。</td>
+          </tr>
+          <tr>
+            <td>string</td>
+            <td>文字列です。ダブルクォート'"'で囲まれた任意の文字列がstringのリテラルとなります。</td>
+          </tr>
+          <tr>
+            <td>formula</td>
+            <td>式を表します。大括弧'[',']'で囲まれた任意の1つの式がformulaのリテラルとなります。<br>
+              式には変数を含めることもできます。その場合はその変数の値によって評価値が変化します。</td>
+          </tr>
+          <tr>
+            <td>reference</td>
+            <td>変数の参照です。referenceを用いることで間接的に変数にアクセスできます。</td>
+          </tr>
+          <tr>
+            <td>array</td>
+            <td>配列です。大括弧'[',']'で各要素にアクセスできます。arrayは参照型です。</td>
+          </tr>
+        </table>
+      </p>
+      </h3>
+
+      <h3 id="nr_variable">変数</h3>
+      <p>
+        Naruでは、上記の型の変数を作成することができます。<br>
+        変数の宣言は、"var 変数名"で行います。変数名には、アルファベット"a-zA-Z"とアンダーバー'_'、数字"0-9"が使用できます。<br>
+        Naruの変数の型は宣言直後では確定しておらず、何か値が代入される事で初めて型が決定されます。<br>
+<div style="background-color:#ffeecc;"><pre>
+<code>var 変数名;
+var 変数名 = 初期値;
+</code></pre></div>
+        変数の配列を作成することもできます。<br>
+        "var 配列名[要素数]"と記述することで配列を作成できます。<br>
+        ただし、配列の場合は初期値を設定することはできません。
+<div style="background-color:#ffeecc;"><pre>
+<code>var 配列名[要素数];
+</code></pre></div>
+      </p>
+      </h3>
+
+      <h3 id="nr_constant">定数</h3>
+      <p>
+        Naruでは、上記の型の定数も作成することができます。<br>
+        定数の宣言は、"const 定数名 = 値"で行います。定数名には、アルファベット"a-zA-Z"とアンダーバー'_'、数字"0-9"が使用できます。<br>
+        定数には必ず値が必要です。また、定数と同じ名前の変数を宣言することはできません。<br>
+<div style="background-color:#ffeecc;"><pre>
+<code>const 定数名 = 値;
+</code></pre></div>
+      </p>
+      </h3>
+
+      <h3 id="nr_flow">分岐と反復</h3>
+      <p>
+        Naruでフロー制御を行う方法にif,while,forがあります。<br>
+
+        ifは括弧内の式を評価し、結果がboolean型のtrueの場合if直後の1文を実行します。<br>
+        結果がfalseの場合は実行せず、ifに対応するelseがある場合そのelse直後の1文を実行します。<br>
+<div style="background-color:#ffeecc;"><pre>
+<code>if(条件式){
+  trueの際に実行する式
+}
+else{
+  falseの際に実行する式
+}
+</code></pre></div>
+
+        whileは括弧内の式を評価し、結果がboolean型のtrueである限りwhile直後の1文を実行し続けます。<br>
+<div style="background-color:#ffeecc;"><pre>
+<code>while(条件式){
+  繰り返し実行する式
+}
+</code></pre></div>
+
+        forは初期化、条件、反復処理をまとめて記述できます。<br>
+<div style="background-color:#ffeecc;"><pre>
+<code>for(初期化;条件式;反復処理){
+  繰り返し実行する式
+}
+</code></pre></div>
+
+
+        中括弧'{','}'を用いる事でif,while,forで複数の文を実行することが出来ます。<br>
+        また、if,while,forは入れ子にすることができます。
+      </p>
+      </h3>
+
+      <h3 id="nr_function">関数の利用</h3>
+      <p>
+        Naruでの関数は、関数名とその直後に連続した括弧'(',')'で表され、括弧の中に引数を記述します。<br>
+        Naruの関数は必ずなんらかの戻り値を持ちますが、その関数が実行されるまで戻り値の型は分かりません。<br>
+        Naruで初めから実装されている関数については、リファレンスを参照してください。<br>
+        <br>
+        関数はプログラマが自作することもできます。<br>
+        関数の宣言には"function"キーワードを使用します。<br>
+<div style="background-color:#ffeecc;"><pre>
+<code>function 関数名(型1 引数名1, 型2 引数名2, ...){
+    中身
+}
+</code></pre></div>
+        <br>
+        関数内で"return"キーワードを用いる事で、戻り値を設定しつつその関数の処理を終えることができます。<br>
+        自作関数のデフォルトの戻り値はnumeric型の0です。<br>
+      </p>
+      </h3>
+
+      <h3 id="nr_include">外部ファイルのインクルード</h3>
+      <p>
+        "include"キーワードを使うと外部ファイルで定義されている関数や定数を使うことができます。<br>
+        インクルードするファイル名はダブルクォートで囲み、絶対パスまたは相対パスで指定します。<br>
+        また、"include"文は末尾にセミコロンをつける必要があります。<br>
+<div style="background-color:#ffeecc;"><pre>
+<code>include "インクルードファイル名";
+</code></pre></div>
+        <br>
+        インクルードされたファイルは、関数及び定数の定義はされますが実行はされません。<br>
+        そのため、インクルードされたファイルで宣言されている変数は使用する事はできません。<br>
+        インクルード推奨ファイルとして、標準では、<br>
+          <ul>
+            <li>定積分など数値計算のための関数が実装されているadditional_math.nrk</li>
+            <li>様々な科学定数が定義されているphysical_constants.nrk</li>
+          </ul>
+        などがあります。
+      </p>
+      </h3>
+
+    <hr>
+
+    <h2 id="rf">リファレンス</h2>
+    <div>
+      <h3 id="rf_reserved">予約語</h3>
+        <table border="1" bordercolor="#000000">
+          <tr><th>予約語</th><th>意味</th></tr>
+          <tr><td>include</td><td>指定ファイルのインクルード</td></tr>
+          <tr><td>if</td><td>条件分岐</td></tr>
+          <tr><td>else</td><td>条件分岐</td></tr>
+          <tr><td>while</td><td>反復処理</td></tr>
+          <tr><td>for</td><td>反復処理</td></tr>
+          <tr><td>var</td><td>変数宣言</td></tr>
+          <tr><td>const</td><td>定数の定義</td></tr>
+          <tr><td>function</td><td>関数の定義</td></tr>
+          <tr><td>return</td><td>戻り値の設定</td></tr>
+          <tr><td>true</td><td>真</td></tr>
+          <tr><td>false</td><td>偽</td></tr>
+          <tr><td>numeric</td><td>数値</td></tr>
+          <tr><td>complex</td><td>複素数</td></tr>
+          <tr><td>string</td><td>文字列</td></tr>
+          <tr><td>boolean</td><td>真偽値</td></tr>
+          <tr><td>formula</td><td>式</td></tr>
+          <tr><td>array</td><td>配列</td></tr>
+          <tr><td>reference</td><td>参照</td></tr>
+        </table>
+
+      <h3 id="rf_operator">演算子</h3>
+        二項演算子
+        <table border="1" bordercolor="#000000">
+          <tr><th>演算子</th><th>優先度</th><th>意味</th></tr>
+          <tr><td>^</td><td>7</td><td>(numeric)累乗,(byte)ビットのXOR演算</td></tr>
+
+          <tr><td>*</td><td>6</td><td>(numeric,complex)乗算</td></tr>
+          <tr><td>/</td><td>6</td><td>(numeric,complex)除算</td></tr>
+          <tr><td>%</td><td>6</td><td>(numeric)余剰（実数可）</td></tr>
+
+          <tr><td>+</td><td>5</td><td>(numeric,complex)加算,(string)文字列の連結</td></tr>
+          <tr><td>-</td><td>5</td><td>(numeric,complex)減算</td></tr>
+
+          <tr><td>&</td><td>4</td><td>(byte)ビットのAND演算</td></tr>
+          <tr><td>|</td><td>4</td><td>(byte)ビットのOR演算</td></tr>
+
+          <tr><td>==</td><td>3</td><td>等価の場合true,そうでない場合false</td></tr>
+          <tr><td>&gt;</td><td>3</td><td>a&gt;bのときaがbより大きい場合true,そうでない場合false</td></tr>
+          <tr><td>&gt;=</td><td>3</td><td>a&gt;=bのときaがb以上の場合true,そうでない場合false</td></tr>
+          <tr><td>&lt;</td><td>3</td><td>a&lt;bのときaがbより小さい場合true,そうでない場合false</td></tr>
+          <tr><td>&lt;=</td><td>3</td><td>a&lt;=bのときaがb以下の場合true,そうでない場合false</td></tr>
+
+          <tr><td>&&</td><td>2</td><td>a&&bのときa,bともにtrueの場合true,そうでない場合false</td></tr>
+          <tr><td>||</td><td>1</td><td>a||bのときa,bともにfalseの場合false,そうでない場合true</td></tr>
+
+          <tr><td>=</td><td>0</td><td>代入</td></tr>
+        </table>
+        <br>
+        単項演算子
+        <table border="1" bordercolor="#000000">
+          <tr><th>演算子</th><th>優先度</th><th>意味</th></tr>
+          <tr><td>*</td><td></td><td>(string)文字列の長さ,(formula)式の評価,(array)配列の要素数,(reference)参照先の変数へのアクセス</td></tr>
+          <tr><td>&</td><td></td><td>(変数)参照の取得</td></tr>
+          <tr><td>++</td><td></td><td>(numeric型の変数)インクリメント</td></tr>
+          <tr><td>--</td><td></td><td>(numeric型の変数)デクリメント</td></tr>
+        </table>
+
+      <h3 id="rf_constant">定数</h3>
+        標準
+        <table border="1" bordercolor="#000000">
+          <tr><th>定数</th><th>意味</th><th>値</th></tr>
+          <tr><td>pi</td><td>円周率</td><td>3.14159265358979323846</td></tr>
+          <tr><td>E</td><td>ネイピア数</td><td>2.71828182845904523536</td></tr>
+        </table>
+
+        <br>
+        physical_constants.nrk
+        <table border="1" bordercolor="#000000">
+          <tr><th>定数</th><th>意味</th><th>値</th></tr>
+          <tr><td>c0</td><td>真空中の光速度</td><td>299792458</td></tr>
+          <tr><td>mu0</td><td>真空の透磁率</td><td>12.566370614e-7</td></tr>
+          <tr><td>eps0</td><td>真空の誘電率</td><td>8.854187817e-12</td></tr>
+          <tr><td>Z0</td><td>真空のインピーダンス</td><td>376730313461</td></tr>
+          <tr><td>G</td><td>万有引力定数</td><td>6.67428e-11</td></tr>
+          <tr><td>g</td><td>重力加速度</td><td>9.80665</td></tr>
+          <tr><td>h</td><td>プランク定数</td><td>6.62606896e-34</td></tr>
+          <tr><td>hbar</td><td>換算プランク定数</td><td>1.054571726e-34</td></tr>
+          <tr><td>e</td><td>電気素量</td><td>1.602176487e-19</td></tr>
+          <tr><td>NA</td><td>アボガドロ定数</td><td>6.02214129e23</td></tr>
+          <tr><td>R</td><td>気体定数</td><td>8.3144621</td></tr>
+          <tr><td>k</td><td>ボルツマン定数</td><td>1.3806488e-23</td></tr>
+        </table>
+
+      <h3 id="rf_function">関数</h3>
+        キャスト関数
+        <table border="1" bordercolor="#000000">
+          <tr><th>関数名</th><th>戻り値</th><th>効果</th></tr>
+          <tr><td>to_numeric(string x)</td> <td>numeric</td>  <td>xをnumericに変換します。</td></tr>
+          <tr><td>to_complex(string x)</td> <td>complex</td>  <td>xをcomplexに変換します。</td></tr>
+          <tr><td>to_byte(string x)</td>    <td>byte</td>   <td>xをbyteに変換します。</td></tr>
+          <tr><td>to_boolean(string x)</td> <td>boolean</td>  <td>xをbooleanに変換します。</td></tr>
+
+          <tr><td>to_string(numeric x)</td> <td>string</td>   <td>xをstringに変換します。</td></tr>
+          <tr><td>to_string(complex x)</td> <td>string</td>   <td>xをstringに変換します。</td></tr>
+          <tr><td>to_string(byte x)</td>    <td>string</td>   <td>xをstringに変換します。</td></tr>
+          <tr><td>to_string(boolean x)</td> <td>string</td>   <td>xをstringに変換します。</td></tr>
+          <tr><td>to_string(formula x)</td> <td>string</td>   <td>xをstringに変換します。</td></tr>
+
+          <tr><td>to_formula(numeric x)</td>  <td>formula</td>  <td>xをformulaに変換します。</td></tr>
+          <tr><td>to_formula(complex x)</td>  <td>formula</td>  <td>xをformulaに変換します。</td></tr>
+          <tr><td>to_formula(byte x)</td>   <td>formula</td>  <td>xをformulaに変換します。</td></tr>
+          <tr><td>to_formula(boolean x)</td>  <td>formula</td>  <td>xをformulaに変換します。</td></tr>
+          <tr><td>to_formula(string x)</td> <td>formula</td>  <td>xをformulaに変換します。</td></tr>
+        </table>
+
+        <br>
+
+        型情報関数
+        <table border="1" bordercolor="#000000">
+          <tr><th>関数名</th><th>戻り値</th><th>効果</th></tr>
+          <tr><td>typeof(x)</td>  <td>string</td> <td>xの型を示す文字列を取得します。</td></tr>
+        </table>
+
+        <br>
+
+        数学関数
+        <table border="1" bordercolor="#000000">
+          <tr><th>関数</th><th>戻り値</th><th>効果</th></tr>
+          <tr><td>round(numeric x)</td>       <td>numeric</td><td>xを四捨五入した整数値を返します。</td></tr>
+          <tr><td>round(numeric x, numeric y)</td>  <td>numeric</td><td>xを小数点以下y桁で四捨五入した整数値を返します。</td></tr>
+          <tr><td>sqrt(numeric x)</td>        <td>numeric</td><td>xの平方根を計算します。</td></tr>
+          <tr><td>abs(numeric x)</td>         <td>numeric</td><td>xの絶対値を計算します。</td></tr>
+          <tr><td>floor(numeric x)</td>       <td>numeric</td><td>x以下の最大の整数を返します。</td></tr>
+          <tr><td>ceil(numeric x)</td>        <td>numeric</td><td>x以上の最小の整数を返します。</td></tr>
+          <tr><td>sin(numeric x)</td>         <td>numeric</td><td>x[rad]の正弦を計算します。</td></tr>
+          <tr><td>cos(numeric x)</td>         <td>numeric</td><td>x[rad]の余弦を計算します。</td></tr>
+          <tr><td>tan(numeric x)</td>         <td>numeric</td><td>x[rad]の正接を計算します。</td></tr>
+          <tr><td>asin(numeric x)</td>        <td>numeric</td><td>sin(y)=xとなるy[rad]を計算します。</td></tr>
+          <tr><td>acos(numeric x)</td>        <td>numeric</td><td>cos(y)=xとなるy[rad]を計算します。</td></tr>
+          <tr><td>atan(numeric x)</td>        <td>numeric</td><td>tan(y)=xとなるy[rad]を計算します。</td></tr>
+          <tr><td>atan2(numeric y, numeric x)</td>  <td>numeric</td><td>tan(z)=y/xとなるz[rad]を計算します。</td></tr>
+          <tr><td>log10(numeric x)</td>       <td>numeric</td><td>10を底としたlog(x)を計算します。</td></tr>
+          <tr><td>ln(numeric x)</td>          <td>numeric</td><td>ネイピア数を底としたlog(x)を計算します。</td></tr>
+          <tr><td>log(numeric x, numeric y)</td>    <td>numeric</td><td>yを底としたlog(x)を計算します。</td></tr>
+          <tr><td>pow(numeric x, numeric y)</td>    <td>numeric</td><td>xのy乗を計算します。</td></tr>
+        </table>
+
+        <br>
+
+        複素数
+        <table border="1" bordercolor="#000000">
+          <tr><th>関数名</th><th>戻り値</th><th>効果</th></tr>
+          <tr><td>_cmp(numeric re, numeric im)</td> <td>complex</td>  <td>実部re,虚部imのcomplex型の値を返します。</td></tr>
+          <tr><td>re(complex x)</td>          <td>numeric</td>  <td>複素数xの実部を返します。</td></tr>
+          <tr><td>im(complex x)</td>          <td>numeric</td>  <td>複素数xの虚部を返します。</td></tr>
+          <tr><td>size(complex x)</td>        <td>numeric</td>  <td>複素数xの大きさを計算します。</td></tr>
+          <tr><td>phase(complex x)</td>       <td>numeric</td>  <td>複素数xの位相を計算します。</td></tr>
+          <tr><td>round(complex x, numeric y)</td>  <td>numeric</td>  <td>複素数xの実部、虚部をそれぞれ小数点以下y桁で四捨五入します。</td></tr>
+          <tr><td>unit(complex x)</td>        <td>complex</td>  <td>複素数xと同じ位相で、大きさが1の複素数を計算します。</td></tr>
+        </table>
+
+        <br>
+
+        配列操作
+        <table border="1" bordercolor="#000000">
+          <tr><th>関数名</th><th>戻り値</th><th>効果</th></tr>
+          <tr><td>new_array(...)</td> <td>array</td>  <td>引数を初期値とした配列を生成します。</td></tr>
+        </table>
+
+        <br>
+
+        出力関数
+        <table border="1" bordercolor="#000000">
+          <tr><th>関数名</th><th>戻り値</th><th>効果</th></tr>
+          <tr><td>print(x)</td> <td>numeric</td>  <td>xを出力し、その文字数を返します。</td></tr>
+          <tr><td>println(x)</td> <td>numeric</td>  <td>xを出力して改行し、その文字数を返します。</td></tr>
+        </table>
+
+        <br>
+
+        その他
+        <table border="1" bordercolor="#000000">
+          <tr><th>関数名</th><th>戻り値</th><th>効果</th></tr>
+          <tr><td>digit(numeric x)</td>           <td>numeric</td>  <td>xの小数点以下の桁数を返します。</td></tr>
+          <tr><td>hamming(byte x, byte y)</td>        <td>numeric</td>  <td>xとyのハミング距離を計算します。</td></tr>
+          <tr><td>rand()</td>                 <td>numeric</td>  <td>0.0〜1.0の乱数を生成します。</td></tr>
+          <tr><td>rand(numeric x)</td>            <td>numeric</td>  <td>xをシード値として0.0〜1.0の乱数を生成します。</td></tr>
+          <tr><td>cond(formula c, formula t, formula f)</td>  <td>不定</td>   <td>cを評価しboolean型trueの場合tを、falseの場合fを評価した値を戻り値とします。</td></tr>
+        </table>
+
+        <br>
+
+        additional_math.nrk
+        <table border="1" bordercolor="#000000">
+          <tr><th>関数名</th><th>戻り値</th><th>効果</th></tr>
+          <tr><td>differential(formula _y, numeric _x0, numeric _N)</td><td>numeric</td><td>xの関数yの導関数_y'の、_y'(_x0)を計算します。<br>_Nは桁数の精度で、正の整数を指定します。</td></tr>
+          <tr><td>definite_integral(formula _y, numeric _xa, numeric _xb, numeric _N)</td><td>numeric</td><td>シンプソンの公式を用いて_xの関数_yを_xaから_xbの範囲で定積分します。<br>_Nは分割数で、正の偶数を指定します。</td></tr>
+          <tr><td>runge_kutta(formula _f, numeric _x0, numeric _y0, numeric _xm, numeric _h)</td><td>numeric</td><td>ルンゲ-クッタの公式を用いて、初期値(_x0,_y0)の_xの関数_yの常微分方程式の解の、_x=_xmの時の値を計算します。<br>_hはきざみ幅で、小さくなるほど精度が上がります。</td>
+          <tr><td>root(numeric _a, numeric _b, numeric _c, array _result)</td><td>boolean</td><td>xの二次方程式_a*x^2+_b*x+_c=0の解を求めます。<br>resultは解でなる2つの複素数が格納される大きさ2の配列です。<br>計算時にエラーが発生した場合はtrueを、そうでない場合はfalseを返します。</td>
+          <tr><td>newton(formula _y, numeric _x0, numeric _EPS, numeric _N)</td><td>numeric</td><td>ニュートン法を用いて、xの方程式_yを解きます。<br>_EPSは許容誤差で、小さくなるほど精度が上がります。_Nは、微分の精度です。</td>
+          <tr><td>bairstow(array _a, array _result, numeric _EPS)</td><td>boolean</td><td>ベアストウ法を用いて、xの多項式を解きたいです（未実装）<br>_aは次数の高い順に格納された係数の配列で、_resultは解を格納する配列、_EPSは計算時の許容誤差です。<br>また、_aと_resultの大きさは等しくなければなりません。</td>
+          <tr><td>gauss_jordan(numeric _M, array _a, numeric _EPS)</td><td>boolean</td><td>ガウス-ジョルダン法を用いて連立方程式の解を求めます。<br>_Mは次数で、_aは大きさが(_M+1)*(_M+2)の方程式を表す配列です。_EPSは計算時の許容誤差です。<br>解は_a[_M+1+i*(_M+2)]に格納されます。<br>計算時にエラーが発生した場合はtrueを、そうでない場合はfalseを返します。</td>
+          <tr><td>least_squares(numeric _N, array _dx, array _dy, numeric _M, array _result, numeric _EPS)</td><td>boolean</td><td>最小二乗法を用いて_N個の点から_M次の回帰曲線を計算します。<br>_dx,_dyは_N個の点のx,y座標を表す配列で、_resultは回帰曲線の係数を格納する_M+1個の配列です。<br>_EPSは計算の許容誤差です。<br>計算時にエラーが発生した場合はtrueを、そうでない場合はfalseを返します。</td>
+        </table>
+
+    </div>
+    
+    <hr>
+
+    <footer>
+      Farore (c) 2014
+    </footer>
+
+  </body>
+</html>

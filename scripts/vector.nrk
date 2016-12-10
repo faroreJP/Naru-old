@@ -1,0 +1,58 @@
+function scale(array _v, numeric _ex){
+  for(var _i=0;_i<(*_v);++_i)
+    _v[_i]=_v[_i]*_ex;
+}
+function size(array _v){
+  var _tmp=0;
+  for(var _i;_i<(*_v);++_i)
+    _tmp=_tmp+_v[_i]*_v[_i];
+  return sqrt(_tmp);
+}
+function add(array _a, array _b, array _result){
+  if((*_a)!=(*_b) || (*_a)!=(*_result)){
+    println("[エラー]ベクトル"+_a+","+_b+","+_c+"の次元は等しくなければなりません。");
+    return true;
+  }
+  for(var _i=0;_i<(*_a);++_i)
+    _result[_i]=_a[_i]+_b[_i];
+  return false;
+}
+function sub(array _a, array _b, array _result){
+  if((*_a)!=(*_b) || (*_a)!=(*_result)){
+    println("[エラー]ベクトル"+_a+","+_b+","+_c+"の次元は等しくなければなりません。");
+    return true;
+  }
+  for(var _i=0;_i<(*_a);++_i)
+    _result[_i]=_a[_i]-_b[_i];
+  return false;
+}
+function dot(array _a, array _b){
+  if((*_a)!=(*_b)){
+    println("[エラー]ベクトル"+_a+","+_b+"の次元は等しくなければなりません。");
+    return 0;
+  }
+  var _tmp=0;
+  for(var _i=0;_i<(*_a);++_i)
+    _tmp=_a[_i]*_b[_i];
+  return _tmp;
+}
+function rotate(array _a, array _b, array _result){
+  var _len=(*_a);
+
+  if(_len*_len!=(*_b)){
+    println("[エラー]"+_b+"の要素数は"+_a+"の要素数の2乗と等しくなければなりません。");
+    return true;
+  }
+  if(_len!=(*_result)){
+    println("[エラー]ベクトル"+_a+","+_c+"の次元は等しくなければなりません。");
+    return true;
+  }
+  var _tmp=0;
+  for(var _i=0;_i<_len;++_i){
+    _result[_i]=0;
+    for(var _k=0;_k<_len;++_k){
+      _result[_i]=_result[_i]+_b[_i*_len+_k]*_a[_k];
+    }
+  }
+  return false;
+}
