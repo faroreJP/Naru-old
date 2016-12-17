@@ -131,28 +131,46 @@ namespace Naru.Analyzer {
     }
 
     public void Executes() {
-        end = false;
-        ActiveNum++;
-        try {
-            for (seek = 0; seek < sentences.Length && !end && !Terminate; seek++) {
-                while (IsStopped) ;
-                sentences[seek].Executes();
-            }
-            ActiveNum--;
+      end = false;
+      ActiveNum++;
+      try {
+        for (seek = 0; seek < sentences.Length && !end && !Terminate; seek++) {
+          while (IsStopped) ;
+          sentences[seek].Executes();
         }
-        catch (Exception e) {
-            end = true;
-            ActiveNum--;
-            int line = LineCount(seek);
-            throw new ApplicationException(line + "行目でエラーが発生しました。:" + sentences[seek].ToString() + " - " + e.Message, e);
-        }
+        ActiveNum--;
+      }
+      catch (Exception e) {
+        end = true;
+        ActiveNum--;
+        int line = LineCount(seek);
+        throw new ApplicationException(line + "行目でエラーが発生しました。:" + sentences[seek].ToString() + " - " + e.Message, e);
+      }
     }
-    public int LineCountAll() {
-        int i = 0;
-        foreach (var s in sentences) {
-          i += s.GetCount();
+
+    public void ExecutesWhileUnStop () {
+      end = false;
+      ActiveNum++;
+      try {
+        for (;seek < sentences.Length && !end && !Terminate && !IsStopped; seek++) {
+          sentences[seek].Executes();
         }
-        return i;
+        ActiveNum--;
+      }
+      catch (Exception e) {
+        end = true;
+        ActiveNum--;
+        int line = LineCount(seek);
+        throw new ApplicationException(line + "行目でエラーが発生しました。:" + sentences[seek].ToString() + " - " + e.Message, e);
+      }
+    }
+
+    public int LineCountAll() {
+      int i = 0;
+      foreach (var s in sentences) {
+        i += s.GetCount();
+      }
+      return i;
     }
     public int LineCount(int length) {
       int c = 0;
