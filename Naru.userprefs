@@ -1,10 +1,11 @@
 ﻿<Properties StartupItem="NaruTest.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="sources/NaruTest/Program.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="sources/Naru/MathDictionary.cs">
     <Files>
-      <File FileName="sources/Naru/MathDictionary.cs" Line="15" Column="18" />
-      <File FileName="sources/Naru/Analyzer/ScriptAnalyzer.cs" Line="5" Column="1" />
-      <File FileName="sources/NaruTest/Program.cs" Line="18" Column="3" />
+      <File FileName="sources/Naru/MathDictionary.cs" Line="337" Column="45" />
+      <File FileName="sources/Naru/Analyzer/ScriptAnalyzer.cs" Line="84" Column="13" />
+      <File FileName="sources/NaruTest/Program.cs" Line="13" Column="55" />
+      <File FileName="sources/Naru/Analyzer/FormulaAnalyzer.cs" Line="208" Column="23" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
