@@ -74,8 +74,8 @@ namespace Naru {
     // Execute Script 
     // @Param script  : Naru Script
     // @Param ostream : Output Stream
-    public static void ExecutesScript(string script, System.IO.TextWriter ostream = Console.Out) {
-        Console.SetOut(ostream);
+    public static void ExecutesScript(string script, System.IO.TextWriter ostream = null) {
+        Console.SetOut(ostream ?? Console.Out);
 
         HasError = false;
         try {
@@ -95,8 +95,8 @@ namespace Naru {
     // @Param script   : Naru Script
     // @Param chkCycle : Check Cycle(second) for Execution 
     // @Param ostream  : Output Stream
-    public static void ExecutesScript(string script, int chkCycle, System.IO.TextWriter ostream = Console.Out) {
-        Console.SetOut(ostream);
+    public static void ExecutesScript(string script, int chkCycle, System.IO.TextWriter ostream = null) {
+        Console.SetOut(ostream ?? Console.Out);
         try {
             var sa = new ScriptAnalyzer(script, new MathDictionary(), chkCycle);
             var t = new Thread(new ThreadStart(sa.MTObserve));

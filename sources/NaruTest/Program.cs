@@ -12,12 +12,12 @@ namespace NaruTest {
         static void Main(string[] args) {
             Console.WriteLine(NaruEngine.Information);
 
-			if (args.Length > 0) {
-				NaruEngine.ExecutesScript ( System.IO.File.ReadAllText(args[0]) );
-			}
-			else {
-				Script();
-			}
+            if (args.Length > 0) {
+                NaruEngine.ExecutesScript ( System.IO.File.ReadAllText(args[0]) );
+            }
+            else {
+                Script();
+            }
         }
 
         static void Script() {
@@ -58,7 +58,7 @@ namespace NaruTest {
                 Console.WriteLine("---script end---\n");
 
                 Console.WriteLine("---output---");
-                NaruEngine.ExecutesScript(sb.ToString(), Console.Out, t);
+                NaruEngine.ExecutesScript(sb.ToString(), t);
                 Console.WriteLine("\n---output end---");
             }
         }
